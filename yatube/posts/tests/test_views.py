@@ -1,3 +1,4 @@
+
 import shutil
 import tempfile
 
@@ -8,7 +9,7 @@ from django.urls import reverse
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from ..models import Post, Group,Follow
+from ..models import Post, Group, Follow
 from django.conf import settings
 
 User = get_user_model()
@@ -39,9 +40,9 @@ class PostPagesTests(TestCase):
                 text=f"Пост №{i+1}",
                 author=User.objects.get(username="Bazz"),
                 group=Group.objects.get(slug="test-slug"),
-                image= SimpleUploadedFile(name='image.gif',
-                                        content=small_gif,
-                                        content_type='image/gif')
+                image=SimpleUploadedFile(name='image.gif',
+                                         content=small_gif,
+                                         content_type='image/gif')
             )
             for i in range(settings.POST_PAGE_AMOUNT)
         ]
@@ -68,7 +69,6 @@ class PostPagesTests(TestCase):
                 kwargs={"username": "Bazz"},
             ): "posts/profile.html",
         }
-
 
     @classmethod
     def tearDownClass(cls):
@@ -199,11 +199,13 @@ class PostPagesTests(TestCase):
             with self.subTest(urls=urls):
                 response = self.authorized_client.get(urls)
                 post = Post.objects.get(id=self.last_post_id)
-                self.assertEqual(response.context['page_obj'][0].image, post.image)
+                self.assertEqual(response.context['page_obj'][0].image,
+                                 post.image)
         response = self.authorized_client.get(reverse(
             'posts:post_detail', kwargs={'post_id': self.last_post_id}))
         object = response.context['post']
         self.assertEqual(object.image, post.image)
+
 
 class FollowingTests(TestCase):
     @classmethod
@@ -243,7 +245,6 @@ class FollowingTests(TestCase):
         follow_count = Follow.objects.count()
         self.assertEqual(follow_count, 0)
 
-
     def test_following_correct_task(self):
         self.authorized_client2.post(reverse(
             'posts:profile_follow',
@@ -263,8 +264,3 @@ class FollowingTests(TestCase):
             'posts:index_follow'))
         object = response.context['page_obj']
         self.assertEqual(len(object), 0)
-
-
-
-
-

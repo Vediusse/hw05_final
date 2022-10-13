@@ -14,6 +14,7 @@ from ..models import Group, Post
 User = get_user_model()
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
+
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class TestCreateForm(TestCase):
     @classmethod
@@ -32,7 +33,6 @@ class TestCreateForm(TestCase):
             last_name='test',
             email='testuser@yatube.ru'
         )
-
 
         cls.user = User.objects.create_user(username='Vedius')
 
@@ -54,6 +54,7 @@ class TestCreateForm(TestCase):
         cls.gif_name = 'small.gif'
         cls.comment = 'Текстовый коммент'
         cls.image_post = 'texts'
+
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
@@ -127,7 +128,8 @@ class TestCreateForm(TestCase):
             'author': self.user
         }
         self.authorized_client.post(
-            reverse('posts:add_comment', kwargs={'post_id': self.post.id}), data=form_data, follow=True)
+            reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
+                    data=form_data, follow=True)
         response = self.authorized_client.get(
             reverse('posts:post_detail', kwargs={'post_id': self.post.id})
         )

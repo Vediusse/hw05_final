@@ -1,12 +1,10 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
 
 from .utilits import get_page
 from .forms import PostForm, CommentForm
 from .models import Group, User, Post, Follow
-
 
 
 def index(request):
@@ -108,6 +106,7 @@ def add_comment(request, post_id):
         return redirect('posts:post_detail', post_id=post_id)
     return redirect('posts:post_detail', post_id=post_id)
 
+
 @login_required
 def index_follow(request):
     posts = Post.objects.filter(author__following__user=request.user)
@@ -121,10 +120,8 @@ def index_follow(request):
 @login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
-    Follow.objects.create(
-            user=request.user,
-            author=author
-        )
+    Follow.objects.create(user=request.user,
+                          author=author)
     return redirect('posts:profile', username)
 
 

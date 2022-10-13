@@ -49,10 +49,10 @@ class Post(CreatedModel):
         blank=True,
         help_text='image',
     )
+
     @property
     def get_author_post(self):
         return self.author.posts.all().count()
-
 
     class Meta:
         ordering = ('-created',)
@@ -81,10 +81,11 @@ class Comment(CreatedModel):
     text = models.TextField(
         verbose_name='Текст комментария',
     )
-    class Meta:
 
+    class Meta:
         verbose_name = 'comment'
         verbose_name_plural = 'comments'
+
     def __str__(self):
         comment_text = self.text[:20]
         return f'Комментарий {comment_text}'
