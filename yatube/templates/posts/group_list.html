@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+    Yatube | {{group.title}}
+{% endblock %}
+{% block content %}
+  {% if page_obj %}
+    <section id="posts">
+      <h1 class="main__header">Все посты группы: {{ group.title }}</h1> 
+      <div class="posts container py-5">
+         <p> {{ group.description }} </p>
+          {% for post in page_obj %}
+            <div class="posts_container">
+              {% include 'includes/description.html' %}    
+            </div> 
+            
+          {% endfor %}
+          {% else %}
+            <p class="py-5 nothing">В группе нет постов :( </p>
+          {% endif %}
+      </div>
+    </section>
+{% endblock %} 
+
+      

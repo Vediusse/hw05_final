@@ -1,0 +1,13 @@
+{% load thumbnail %}
+<ul class="posts__data posts__ul">
+    <li >
+        Автор: <a href="{% url 'posts:profile' post.author %}" class="posts_author"> {{ post.author.get_full_name }} <span>@aka</span> {{post.author}}</a>
+    </li>
+    <li class="posts__li">
+      <span class="post_article">Дата публикации:</span> {{ post.created|date:"d E Y" }}
+    </li>
+</ul>
+ {% thumbnail post.image "900x339" crop="center" upscale=True as im %}
+                <img class="card-img my-2" src="{{ im.url }}">
+              {% endthumbnail %}
+<p class="posts__text">{{ post.text|linebreaksbr }}</p> 

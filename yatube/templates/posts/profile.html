@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %} Посты {{ author.first_name }} {{ author.last_name }} | Yatube {% endblock %}
+    {% block content %}
+    <section id="posts">
+        <h1 class="main__header">Все посты пользователя: {{ author.get_full_name }} @aka {{author.username}} </h1>
+        {% if author != request.user %}
+            {% if following %}
+                <a
+                  class="btn btn-lg btn-light  follow_btn follow_btn-disable"
+                  href="{% url 'posts:profile_unfollow' author.username %}" role="button"
+                >
+                  -Отписаться
+                </a>
+              {% else %}
+                  <a
+                    class="btn btn-lg btn-primary follow_btn"
+                    href="{% url 'posts:profile_follow' author.username %}" role="button"
+                  >
+                    +Подписаться
+                  </a>
+            {% endif %}
+        {% endif %}
+
+      <div class="posts container py-5">      
+      {% for post in page_obj %}
+        <div class="posts_container">
+          {% include 'includes/description.html' %} 
+          {% if post.group %}
+              <div class="post__description">
+                  <div class="post__link">
+                    <a href="{% url 'posts:group_list' post.group.slug %}" class="posts__data">все записи группы: {{post.group.slug}}</a>
+                  </div>
+              </div>
+          {% endif %} 
+        </div> 
+      {% if forloop.last %}
+        
+      {% endif %}
+  {% endfor %} 
+{% endblock %} 

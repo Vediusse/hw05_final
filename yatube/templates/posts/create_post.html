@@ -1,0 +1,50 @@
+
+    {% extends "base.html" %}
+    {% load static %}
+    {% block header %}{% endblock %}
+    {% block title %}
+      {% if is_edit %}
+         Yatube | редактор
+      {% else %}
+      Yatube | новый пост
+      {% endif %}
+    {% endblock %}
+    {% block content %}
+        <section id="form">
+          <form method="post" class="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row form__wrapper">
+                {% for field in form %}
+                  <div class="form-group  " >
+                    <label for="{{ field.id_for_label }}" class="col-md-4  form__label">
+                      {{ field.label }}
+                      {% if field.field.required %}
+                        <span class="required">*</span>
+                      {% endif %}
+                      {% if form.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        Неизвестная Ошибка
+                      </div>
+                    {% endif %}
+                    </label>
+                    <div class="col-md-6 form__select {{ field.help_text }}">
+                      {{ field }}
+
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+            <div class="">
+              <button type="submit" class="btn btn-primary">
+                {% if is_edit %}
+                   Изменить
+                {% else %}
+                   Сохранить
+                {% endif %}
+              </button>
+            </div>
+
+          </form>
+        </section>
+    {% endblock %} 
+  

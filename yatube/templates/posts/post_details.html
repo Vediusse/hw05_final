@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block header %}1{% endblock %}
+      
+    {% block title %} Пост | Yatube {% endblock %}
+    {% block content %}
+    <section id="info">
+      <div class="row post__info">
+        <aside class="col-12 col-md-3 ">
+          <ul class="list-group list-group-flush info__blocks">
+            <li class="list-group-item">
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}
+            </li>
+
+            {% if post.group %}
+              <li class="list-group-item">
+                Группа: {{post.group.slug}}
+                <a href="{% url 'posts:group_list' post.group.slug %}" class="posts__data">все записи группы</a>
+              </li> 
+            {% endif %}
+            <li class="list-group-item">
+              Автор: {{ post.author.get_full_name }}
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Всего постов автора: <span >{{ post_amount }}</span>
+            </li>
+            <li class="list-group-item">
+              <a href="{% url 'posts:profile' post.author  %}">
+                все посты пользователя
+              </a>
+            </li>
+          </ul>
+        </aside>
+        <article class="col-12 col-md-9 info__content">
+        {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+                <img class="list-img my-2" src="{{ im.url }}">
+              {% endthumbnail %}
+          <p  class="posts__text">
+            {{ post.text|linebreaksbr }}
+          </p>
+          {% if post.author == user %}
+            <div class="post__link">   
+              <a href="{% url 'posts:edit' post.id %}" class="posts__data"> Pедактировать запись</a>
+            </div>
+          {% endif %}
+        </article>
+      </div>
+    </section>
+
+              {% if user.is_authenticated %}
+                  <section id="form__comment">
+                      <div class="comment__card">
+                        <h5 class="card-header">Добавить комментарий:</h5>
+                        <div class="card-wrapper">
+                          <form method="post" action="{% url 'posts:add_comment' post.id %}" class="form-post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                              {{ form.text }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить</button>
+                          </form>
+                        </div>
+                      </div>
+                  </section>
+              {% endif %}
+                    {% if comments %}
+                        <h2 class="comment_header">Вот такие комментарии оставили пользователи под постом </h2>
+                        {% for comment in comments %}
+                            <section id="comment">
+                                  <div class="posts_container">
+                                      <ul class="posts__data posts__ul">
+                                        <li>
+                                          Автор: <a href="{% url 'posts:profile' comment.author %}">{{ comment.author.get_full_name }} @aka {{comment.author}}</a>
+                                        </li>
+                                        <li class="posts__li">
+                                          <span class="post_article">Дата публикации:</span> {{ comment.created|date:"d E Y" }}
+                                        </li>
+                                      </ul>
+                                   <p class="posts__text">{{ comment.text|linebreaksbr }}</p>
+                                  </div>
+                            </section>
+                        {% endfor %}
+                        {% else %}
+                            <h2 class="comment_header">  Комментариев  пока нет. {% if user.is_authenticated %}Станьте первым {% endif %} </h2>
+                    {% endif %}
+
+{% endblock %}

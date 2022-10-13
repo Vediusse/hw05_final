@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Yatube
+{% endblock %}
+
+{% block content %}
+
+            <section id="posts">
+      <h1 class="main__header">Подписки</h1>
+
+      <div class="posts container py-5">
+          {% if user.is_authenticated %}
+              <div class="row my-3">
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link {% if index %}active{% endif %} posts__menu"
+                      href="{% url 'posts:index' %}"
+                    >
+                      Все авторы
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                       class="nav-link {% if follow %}active{% endif %} posts__menu"
+                       href="{% url 'posts:index_follow' %}"
+                    >
+                      Избранные авторы
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              {% else %}
+              <h2 class="posts__header">Новые публикации</h2>
+        {% endif %}
+          {% for post in page_obj %}
+            <div class="posts_container">
+              {% include 'includes/description.html' %}
+                <div class="post__description">
+                  {% if post.group %}
+                  <div class="post__link">
+                    <a href="{% url 'posts:group_list' post.group.slug %}" class="posts__data">все записи группы: {{post.group.slug}}</a>
+                  </div>
+                  {% endif %}
+                    {% if post.author == user %}
+                        <div class="post__link">
+                          <a href="{% url 'posts:edit' post.id %}" class="posts__data"> Pедактировать запись </a>
+                        </div>
+                    {% endif %}
+                        <div class="post__link">
+                          <a href="{% url "posts:post_detail" post.id %}" class="posts__data"> О посте </a>
+                        </div>
+                </div>
+            </div>
+
+
+
+              {% if forloop.last %}
+
+              {% endif %}
+
+          {% endfor %}
+
+{% endblock %}
