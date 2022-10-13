@@ -128,8 +128,10 @@ class TestCreateForm(TestCase):
             'author': self.user
         }
         self.authorized_client.post(
-            reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
-                    data=form_data, follow=True)
+            reverse('posts:add_comment',
+                    kwargs={'post_id': self.post.id}),
+            data=form_data,
+            follow=True)
         response = self.authorized_client.get(
             reverse('posts:post_detail', kwargs={'post_id': self.post.id})
         )
