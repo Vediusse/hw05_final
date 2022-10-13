@@ -234,6 +234,16 @@ class FollowingTests(TestCase):
         follow_count = Follow.objects.count()
         self.assertEqual(follow_count, 0)
 
+    def test_following_user_only_one(self):
+        self.authorized_client.post(reverse(
+            'posts:profile_follow',
+            kwargs={'username': self.user2}))
+        self.authorized_client.post(reverse(
+            'posts:profile_follow',
+            kwargs={'username': self.user2}))
+        follow_count = Follow.objects.count()
+        self.assertEqual(follow_count, 1)
+
     def test_following_task(self):
         self.authorized_client.post(reverse(
             'posts:profile_follow',
