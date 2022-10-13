@@ -34,7 +34,7 @@ def profile(request, username):
     posts = author.posts.all()
     page_obj = get_page(request, posts)
     following = False
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user != author:
         following = Follow.objects.filter(
             author=author,
             user=request.user

@@ -225,6 +225,13 @@ class FollowingTests(TestCase):
         self.authorized_client2.force_login(self.user2)
         self.authorized_client3.force_login(self.user3)
 
+    def test_following_user_by_yourself(self):
+        self.authorized_client.post(reverse(
+            'posts:profile_follow',
+            kwargs={'username': self.user}))
+        follow_count = Follow.objects.count()
+        self.assertEqual(follow_count, 1)
+
     def test_following_task(self):
         self.authorized_client.post(reverse(
             'posts:profile_follow',
@@ -235,6 +242,7 @@ class FollowingTests(TestCase):
             kwargs={'username': self.user2}))
         follow_count = Follow.objects.count()
         self.assertEqual(follow_count, 0)
+
 
     def test_following_correct_task(self):
         self.authorized_client2.post(reverse(
@@ -255,5 +263,8 @@ class FollowingTests(TestCase):
             'posts:index_follow'))
         object = response.context['page_obj']
         self.assertEqual(len(object), 0)
+
+
+
 
 
