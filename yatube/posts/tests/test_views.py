@@ -232,7 +232,7 @@ class FollowingTests(TestCase):
             'posts:profile_follow',
             kwargs={'username': self.user}))
         follow_count = Follow.objects.count()
-        self.assertEqual(follow_count, 1)
+        self.assertEqual(follow_count, 0)
 
     def test_following_task(self):
         self.authorized_client.post(reverse(
