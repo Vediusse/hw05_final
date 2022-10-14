@@ -1,12 +1,9 @@
 {% load static %}
 <header id="header">
-    <!-- Использованы классы бустрапа для создания типовой навигации с логотипом -->
-    <!-- В дальнейшем тут будет создано полноценное меню --> 
     <div class="header__container">   
       <nav class=" header__nav navbar  navbar-light" >
           <a class="navbar-brand header__link " href="{% url 'posts:index' %}">
             <img src="{% static 'img/logo2.png' %}" class="header_icon" >
-            <!-- тег span используется для добавления нужных стилей отдельным участкам текста -->
             <p class="header__logo">
               <span>Ya</span>tube
             </p>

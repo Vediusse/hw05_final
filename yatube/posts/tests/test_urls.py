@@ -24,23 +24,29 @@ class PostURLTests(TestCase):
             text='Тестовый пост',
         )
         cls.user = User.objects.create_user(username='Vedius')
+        cls.user2 = User.objects.create_user(username='leos')
 
     def setUp(self):
         self.guest_client = Client()
 
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
+        self.authorized_client2 = Client()
+        self.authorized_client.force_login(self.user2)
 
     def test_urls_uses_correct_template(self):
 
         templates_url_names = {
             '/': HTTPStatus.OK.value,
-            f'/group/{self.group.slug}/': HTTPStatus.OK.value,
-            f'/profile/{self.user}/': HTTPStatus.OK.value,
-            f'/posts/{self.post.id}/': HTTPStatus.OK.value,
             '/create/': HTTPStatus.FOUND.value,
+            '/follow/': HTTPStatus.FOUND.value,
+            f'/posts/{self.post.id}/': HTTPStatus.OK.value,
             f'/posts/{self.post.id}/comment/': HTTPStatus.FOUND.value,
-            '/unexisting_page/': HTTPStatus.NOT_FOUND.value
+            f'/posts/{self.post.id}/edit/': HTTPStatus.FOUND.value,
+            f'/group/{self.group.slug}/': HTTPStatus.OK.value,
+            f'/profile/{self.user2}/': HTTPStatus.OK.value,
+            f'/profile/{self.user2}/follow/': HTTPStatus.FOUND.value,
+            f'/profile/{self.user2}/unfollow/': HTTPStatus.FOUND.value,
         }
         for address, status in templates_url_names.items():
             with self.subTest(address=address):

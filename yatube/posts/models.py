@@ -41,7 +41,7 @@ class Post(CreatedModel):
         User,
         on_delete=models.CASCADE,
         related_name='posts',
-        verbose_name='Автор поста'
+        verbose_name='Автор поста',
     )
     image = models.ImageField(
         'Картинка',
@@ -51,7 +51,7 @@ class Post(CreatedModel):
     )
 
     @property
-    def get_author_post(self):
+    def amount_author_post(self):
         return self.author.posts.all().count()
 
     class Meta:
@@ -89,6 +89,10 @@ class Comment(CreatedModel):
     def __str__(self):
         comment_text = self.text[:20]
         return f'Комментарий {comment_text}'
+
+    @property
+    def author_comment(self):
+        return str(self.author)
 
 
 class Follow(models.Model):

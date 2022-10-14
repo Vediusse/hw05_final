@@ -6,7 +6,7 @@
 
 {% block content %}
     {% load cache %}
-    {% cache 5 index_page %}
+    {% cache 5 index_page page_obj.number %}
             <section id="posts">
               <h1 class="main__header">Главная страница</h1>
 
@@ -46,7 +46,7 @@
                           {% endif %}
                             {% if post.author == user %}
                                 <div class="post__link">
-                                  <a href="{% url 'posts:edit' post.id %}" class="posts__data"> Pедактировать запись  {{comment.get_author_post}}</a>
+                                  <a href="{% url 'posts:edit' post.id %}" class="posts__data"> Pедактировать пост  </a>
                                 </div>
                             {% endif %}
                                 <div class="post__link">

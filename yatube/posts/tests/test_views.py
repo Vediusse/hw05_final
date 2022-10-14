@@ -189,7 +189,7 @@ class PostPagesTests(TestCase):
         templates_pages_name = {
             reverse("posts:index"): "posts/index.html",
             reverse(
-                "posts:group_list", kwargs={"slug": "test-slug"}
+                "posts:group_list", kwargs={"slug": self.group.slug}
             ): "posts/group_list.html",
             reverse(
                 "posts:profile", kwargs={"username": self.user}
@@ -249,6 +249,10 @@ class FollowingTests(TestCase):
             'posts:profile_follow',
             kwargs={'username': self.user2}))
         self.assertEqual(Follow.objects.get().author, self.user2)
+        follow_count = Follow.objects.count()
+        self.assertEqual(follow_count, 1)
+
+    def test_unfollowing_task(self):
         self.authorized_client.post(reverse(
             'posts:profile_unfollow',
             kwargs={'username': self.user2}))

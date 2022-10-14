@@ -8,7 +8,7 @@ from .models import Group, User, Post, Follow
 
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().select_related('author', 'group')
     page_obj = get_page(request, posts)
     context = {
         'page_obj': page_obj,
@@ -49,7 +49,7 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     form = CommentForm(request.POST or None)
     comments = post.comments.all()
-    post_amount = post.get_author_post
+    post_amount = post.amount_author_post
     context = {
         'post': post,
         'form': form,
@@ -133,5 +133,7 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    Follow.objects.filter(user=request.user, author=author).delete()
+    follow = Follow.objects.filter(user=request.user, author=author)
+    if follow.exists():
+        follow.delete()
     return redirect('posts:profile', username)
