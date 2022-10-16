@@ -68,7 +68,6 @@ class Comment(CreatedModel):
         null=False,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Post',
     )
     author = models.ForeignKey(
         User,
@@ -76,11 +75,8 @@ class Comment(CreatedModel):
         null=False,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Автор',
     )
-    text = models.TextField(
-        verbose_name='Текст комментария',
-    )
+    text = models.TextField()
 
     class Meta:
         verbose_name = 'comment'
@@ -92,7 +88,7 @@ class Comment(CreatedModel):
 
     @property
     def author_comment(self):
-        return str(self.author)
+        return self.author.username
 
 
 class Follow(models.Model):

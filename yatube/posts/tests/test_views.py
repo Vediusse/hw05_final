@@ -8,9 +8,10 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings
 
 from ..models import Post, Group, Follow
-from django.conf import settings
+
 
 User = get_user_model()
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
@@ -39,7 +40,7 @@ class PostPagesTests(TestCase):
             Post(
                 text=f"Пост №{i+1}",
                 author=User.objects.get(username="Bazz"),
-                group=Group.objects.get(slug="test-slug"),
+                group=Group.objects.get(slug=cls.group.slug),
                 image=SimpleUploadedFile(name='image.gif',
                                          content=small_gif,
                                          content_type='image/gif')
