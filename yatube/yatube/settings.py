@@ -30,6 +30,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '[::1]',
     'testserver',
+    'www.wediusse.pythonanywhere.com',
+    'wediusse.pythonanywhere.com',
 ]
 
 
@@ -46,13 +48,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     "core.apps.CoreConfig",
     'sorl.thumbnail',
+    'debug_toolbar',
     'django.contrib.staticfiles',
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,6 +127,10 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
